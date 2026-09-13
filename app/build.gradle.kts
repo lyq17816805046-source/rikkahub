@@ -15,11 +15,11 @@ plugins {
 }
 
 android {
-    namespace = "me.rerere.rikkahub"
+    namespace = "me.rerere.rikkahub.ys"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "me.rerere.rikkahub"
+        applicationId = "me.rerere.rikkahub.ys"
         minSdk = 26
         targetSdk = 37
         versionCode = 186
