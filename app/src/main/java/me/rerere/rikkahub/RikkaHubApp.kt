@@ -14,6 +14,7 @@ import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +58,15 @@ const val WEB_SERVER_NOTIFICATION_CHANNEL_ID = "web_server"
 class RikkaHubApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        
+        // 安全初始化 Firebase（使用占位符配置时可能失败）
+        try {
+            FirebaseApp.initializeApp(this)
+            Log.d(TAG, "Firebase initialized successfully")
+        } catch (e: Exception) {
+            Log.w(TAG, "Firebase initialization failed (expected in debug builds)", e)
+        }
+        
         // Restore files and settings before eager Koin singletons or workers can access them.
         try {
             val restored = runBlocking(Dispatchers.IO) {
