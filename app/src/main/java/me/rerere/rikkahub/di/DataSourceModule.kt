@@ -11,6 +11,8 @@ import me.rerere.common.http.AcceptLanguageBuilder
 import me.rerere.rikkahub.BuildConfig
 import me.rerere.rikkahub.data.ai.AIRequestInterceptor
 import me.rerere.rikkahub.data.ai.RequestLoggingInterceptor
+import me.rerere.rikkahub.data.ai.providers.BailianNativeProvider
+import me.rerere.rikkahub.data.ai.providers.ZhipuNativeProvider
 import me.rerere.rikkahub.data.ai.transformers.AssistantTemplateLoader
 import me.rerere.rikkahub.data.ai.GenerationLoop
 import me.rerere.rikkahub.data.ai.TranslationHandler
@@ -192,7 +194,18 @@ val dataSourceModule = module {
     }
 
     single {
-        ProviderManager(client = get(), context = get())
+        ProviderManager(client = get(), context = get()).apply {
+            // 注册百炼原生 Provider
+            registerProvider(
+                ProviderManager.PROVIDER_BAILIAN,
+                BailianNativeProvider(client = get(), context = get())
+            )
+            // 注册智谱原生 Provider
+            registerProvider(
+                ProviderManager.PROVIDER_ZHIPU,
+                ZhipuNativeProvider(client = get(), context = get())
+            )
+        }
     }
 
     single { BackupManager(context = get(), database = get(), settingsStore = get(), json = get()) }

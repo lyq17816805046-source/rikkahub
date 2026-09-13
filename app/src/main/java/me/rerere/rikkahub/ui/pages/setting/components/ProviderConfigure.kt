@@ -75,6 +75,8 @@ fun ProviderConfigure(
             is ProviderSetting.OpenAI -> ProviderConfigureOpenAI(provider, onEdit)
             is ProviderSetting.Google -> ProviderConfigureGoogle(provider, onEdit)
             is ProviderSetting.Claude -> ProviderConfigureClaude(provider, onEdit)
+            is ProviderSetting.Bailian -> ProviderConfigureBailian(provider, onEdit)
+            is ProviderSetting.Zhipu -> ProviderConfigureZhipu(provider, onEdit)
         }
     }
 }
@@ -86,16 +88,22 @@ fun ProviderSetting.convertTo(type: KClass<out ProviderSetting>): ProviderSettin
         is ProviderSetting.OpenAI -> this.apiKey
         is ProviderSetting.Google -> this.apiKey
         is ProviderSetting.Claude -> this.apiKey
+        is ProviderSetting.Bailian -> this.apiKey
+        is ProviderSetting.Zhipu -> this.apiKey
     }
     val sourceBaseUrl = when (this) {
         is ProviderSetting.OpenAI -> this.baseUrl
         is ProviderSetting.Google -> this.baseUrl
         is ProviderSetting.Claude -> this.baseUrl
+        is ProviderSetting.Bailian -> this.baseUrl
+        is ProviderSetting.Zhipu -> this.baseUrl
     }
     val targetDefaultBaseUrl = when (type) {
         ProviderSetting.OpenAI::class -> ProviderSetting.OpenAI().baseUrl
         ProviderSetting.Google::class -> ProviderSetting.Google().baseUrl
         ProviderSetting.Claude::class -> ProviderSetting.Claude().baseUrl
+        ProviderSetting.Bailian::class -> ProviderSetting.Bailian().baseUrl
+        ProviderSetting.Zhipu::class -> ProviderSetting.Zhipu().baseUrl
         else -> error("Unsupported provider type: $type")
     }
     val convertedBaseUrl = sourceBaseUrl.convertToTargetBaseUrl(targetDefaultBaseUrl)
@@ -119,6 +127,18 @@ fun ProviderSetting.convertTo(type: KClass<out ProviderSetting>): ProviderSettin
             description = this.description, shortDescription = this.shortDescription,
             apiKey = apiKey, baseUrl = convertedBaseUrl
         )
+        ProviderSetting.Bailian::class -> ProviderSetting.Bailian(
+            id = this.id, enabled = this.enabled, name = this.name, models = this.models,
+            balanceOption = this.balanceOption, builtIn = this.builtIn,
+            description = this.description, shortDescription = this.shortDescription,
+            apiKey = apiKey, baseUrl = convertedBaseUrl
+        )
+        ProviderSetting.Zhipu::class -> ProviderSetting.Zhipu(
+            id = this.id, enabled = this.enabled, name = this.name, models = this.models,
+            balanceOption = this.balanceOption, builtIn = this.builtIn,
+            description = this.description, shortDescription = this.shortDescription,
+            apiKey = apiKey, baseUrl = convertedBaseUrl
+        )
         else -> error("Unsupported provider type: $type")
     }
 }
@@ -130,12 +150,16 @@ internal fun ProviderSetting.defaultBaseUrlForReset(): String {
             is ProviderSetting.OpenAI -> if (defaultProvider is ProviderSetting.OpenAI) return defaultProvider.baseUrl
             is ProviderSetting.Google -> if (defaultProvider is ProviderSetting.Google) return defaultProvider.baseUrl
             is ProviderSetting.Claude -> if (defaultProvider is ProviderSetting.Claude) return defaultProvider.baseUrl
+            is ProviderSetting.Bailian -> if (defaultProvider is ProviderSetting.Bailian) return defaultProvider.baseUrl
+            is ProviderSetting.Zhipu -> if (defaultProvider is ProviderSetting.Zhipu) return defaultProvider.baseUrl
         }
     }
     return when (this) {
         is ProviderSetting.OpenAI -> ProviderSetting.OpenAI().baseUrl
         is ProviderSetting.Google -> ProviderSetting.Google().baseUrl
         is ProviderSetting.Claude -> ProviderSetting.Claude().baseUrl
+        is ProviderSetting.Bailian -> ProviderSetting.Bailian().baseUrl
+        is ProviderSetting.Zhipu -> ProviderSetting.Zhipu().baseUrl
     }
 }
 
@@ -145,6 +169,8 @@ internal fun ProviderSetting.resetBaseUrlToDefault(): ProviderSetting {
         is ProviderSetting.OpenAI -> this.copy(baseUrl = defaultBaseUrl)
         is ProviderSetting.Google -> this.copy(baseUrl = defaultBaseUrl)
         is ProviderSetting.Claude -> this.copy(baseUrl = defaultBaseUrl)
+        is ProviderSetting.Bailian -> this.copy(baseUrl = defaultBaseUrl)
+        is ProviderSetting.Zhipu -> this.copy(baseUrl = defaultBaseUrl)
     }
 }
 
@@ -153,6 +179,8 @@ internal fun ProviderSetting.isUsingDefaultBaseUrl(): Boolean {
         is ProviderSetting.OpenAI -> this.baseUrl
         is ProviderSetting.Google -> this.baseUrl
         is ProviderSetting.Claude -> this.baseUrl
+        is ProviderSetting.Bailian -> this.baseUrl
+        is ProviderSetting.Zhipu -> this.baseUrl
     }
     return baseUrl == defaultBaseUrlForReset()
 }
@@ -190,12 +218,16 @@ private fun String.isValidBaseUrl(): Boolean = this.toHttpUrlOrNull() != null
 private const val OPENAI_OFFICIAL_HOST = "api.openai.com"
 private const val GOOGLE_OFFICIAL_HOST = "generativelanguage.googleapis.com"
 private const val CLAUDE_OFFICIAL_HOST = "api.anthropic.com"
+private const val BAILIAN_OFFICIAL_HOST = "dashscope.aliyuncs.com"
+private const val ZHIPU_OFFICIAL_HOST = "open.bigmodel.cn"
 private const val V1_SUFFIX = "/v1"
 private const val V1_BETA_SUFFIX = "/v1beta"
 private val OFFICIAL_PROVIDER_HOSTS = setOf(
     OPENAI_OFFICIAL_HOST,
     GOOGLE_OFFICIAL_HOST,
-    CLAUDE_OFFICIAL_HOST
+    CLAUDE_OFFICIAL_HOST,
+    BAILIAN_OFFICIAL_HOST,
+    ZHIPU_OFFICIAL_HOST,
 )
 
 @Composable
@@ -536,6 +568,144 @@ private fun ProviderConfigureGoogle(
             onValueChange = { onEdit(provider.copy(projectId = it.trim())) },
             label = { Text(stringResource(R.string.setting_provider_page_project_id)) },
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun ProviderConfigureBailian(
+    provider: ProviderSetting.Bailian,
+    onEdit: (provider: ProviderSetting.Bailian) -> Unit
+) {
+    provider.description()
+
+    OutlinedTextField(
+        value = provider.name,
+        onValueChange = { onEdit(provider.copy(name = it)) },
+        label = { Text(stringResource(R.string.setting_provider_page_name)) },
+        modifier = Modifier.fillMaxWidth(),
+    )
+
+    var keyVisible by remember { mutableStateOf(false) }
+    OutlinedTextField(
+        value = provider.apiKey,
+        onValueChange = { onEdit(provider.copy(apiKey = it.trim())) },
+        label = { Text(stringResource(R.string.setting_provider_page_api_key)) },
+        modifier = Modifier.fillMaxWidth(),
+        maxLines = 3,
+        visualTransformation = if (keyVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            IconButton(onClick = { keyVisible = !keyVisible }) {
+                Icon(if (keyVisible) HugeIcons.ViewOff else HugeIcons.View, contentDescription = null)
+            }
+        },
+    )
+
+    OutlinedTextField(
+        value = provider.baseUrl,
+        onValueChange = { onEdit(provider.copy(baseUrl = it.trim())) },
+        label = { Text(stringResource(R.string.setting_provider_page_api_base_url)) },
+        modifier = Modifier.fillMaxWidth(),
+        isError = provider.baseUrl.isNotBlank() && !provider.baseUrl.isValidBaseUrl(),
+    )
+
+    OutlinedTextField(
+        value = provider.generationPath,
+        onValueChange = { onEdit(provider.copy(generationPath = it.trim())) },
+        label = { Text(stringResource(R.string.setting_provider_page_api_path)) },
+        modifier = Modifier.fillMaxWidth(),
+    )
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(stringResource(R.string.setting_provider_page_enable))
+        Switch(
+            checked = provider.enabled,
+            onCheckedChange = { onEdit(provider.copy(enabled = it)) }
+        )
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("增量输出")
+        Switch(
+            checked = provider.incrementalOutput,
+            onCheckedChange = { onEdit(provider.copy(incrementalOutput = it)) }
+        )
+    }
+}
+
+@Composable
+private fun ProviderConfigureZhipu(
+    provider: ProviderSetting.Zhipu,
+    onEdit: (provider: ProviderSetting.Zhipu) -> Unit
+) {
+    provider.description()
+
+    OutlinedTextField(
+        value = provider.name,
+        onValueChange = { onEdit(provider.copy(name = it)) },
+        label = { Text(stringResource(R.string.setting_provider_page_name)) },
+        modifier = Modifier.fillMaxWidth(),
+    )
+
+    var keyVisible by remember { mutableStateOf(false) }
+    OutlinedTextField(
+        value = provider.apiKey,
+        onValueChange = { onEdit(provider.copy(apiKey = it.trim())) },
+        label = { Text(stringResource(R.string.setting_provider_page_api_key)) },
+        modifier = Modifier.fillMaxWidth(),
+        maxLines = 3,
+        visualTransformation = if (keyVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            IconButton(onClick = { keyVisible = !keyVisible }) {
+                Icon(if (keyVisible) HugeIcons.ViewOff else HugeIcons.View, contentDescription = null)
+            }
+        },
+    )
+
+    OutlinedTextField(
+        value = provider.baseUrl,
+        onValueChange = { onEdit(provider.copy(baseUrl = it.trim())) },
+        label = { Text(stringResource(R.string.setting_provider_page_api_base_url)) },
+        modifier = Modifier.fillMaxWidth(),
+        isError = provider.baseUrl.isNotBlank() && !provider.baseUrl.isValidBaseUrl(),
+    )
+
+    OutlinedTextField(
+        value = provider.chatCompletionsPath,
+        onValueChange = { onEdit(provider.copy(chatCompletionsPath = it.trim())) },
+        label = { Text(stringResource(R.string.setting_provider_page_api_path)) },
+        modifier = Modifier.fillMaxWidth(),
+    )
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(stringResource(R.string.setting_provider_page_enable))
+        Switch(
+            checked = provider.enabled,
+            onCheckedChange = { onEdit(provider.copy(enabled = it)) }
+        )
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("JWT 鉴权")
+        Switch(
+            checked = provider.jwtAuth,
+            onCheckedChange = { onEdit(provider.copy(jwtAuth = it)) }
         )
     }
 }

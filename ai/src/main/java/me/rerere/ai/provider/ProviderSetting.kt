@@ -238,12 +238,152 @@ sealed class ProviderSetting {
         }
     }
 
+    /**
+     * 阿里云百炼 (DashScope) 原生协议配置
+     *
+     * 走 DashScope 原生 HTTP API: 请求体为 `model` / `input` / `parameters` 三段式结构,
+     * 流式通过 `X-DashScope-SSE: enable` 请求头开启, 与 OpenAI 兼容模式
+     * (`/compatible-mode/v1/chat/completions`) 是两套完全独立的协议。
+     */
+    @Serializable
+    @SerialName("bailian")
+    data class Bailian(
+        override var id: Uuid = Uuid.random(),
+        override var enabled: Boolean = true,
+        override var name: String = "Bailian",
+        override var models: List<Model> = emptyList(),
+        override val balanceOption: BalanceOption = BalanceOption(),
+        @Transient override val builtIn: Boolean = false,
+        @Transient override val description: @Composable (() -> Unit) = {},
+        @Transient override val shortDescription: @Composable (() -> Unit) = {},
+        var apiKey: String = "",
+        var baseUrl: String = "https://dashscope.aliyuncs.com/api/v1",
+        // DashScope 原生文本生成接口路径
+        var generationPath: String = "/services/aigc/text-generation/generation",
+        // 流式是否增量输出; 关闭时服务端回传全量文本, 由客户端自行做前缀差分
+        var incrementalOutput: Boolean = true,
+    ) : ProviderSetting() {
+        override fun addModel(model: Model): ProviderSetting {
+            return copy(models = models + model)
+        }
+
+        override fun editModel(model: Model): ProviderSetting {
+            return copy(models = models.map { if (it.id == model.id) model.copy() else it })
+        }
+
+        override fun delModel(model: Model): ProviderSetting {
+            return copy(models = models.filter { it.id != model.id })
+        }
+
+        override fun moveMove(
+            from: Int,
+            to: Int
+        ): ProviderSetting {
+            return copy(models = models.toMutableList().apply {
+                val model = removeAt(from)
+                add(to, model)
+            })
+        }
+
+        override fun copyProvider(
+            id: Uuid,
+            enabled: Boolean,
+            name: String,
+            models: List<Model>,
+            balanceOption: BalanceOption,
+            builtIn: Boolean,
+            description: @Composable (() -> Unit),
+            shortDescription: @Composable (() -> Unit),
+        ): ProviderSetting {
+            return this.copy(
+                id = id,
+                enabled = enabled,
+                name = name,
+                models = models,
+                balanceOption = balanceOption,
+                builtIn = builtIn,
+                description = description,
+                shortDescription = shortDescription,
+            )
+        }
+    }
+
+    /**
+     * 智谱 (BigModel / GLM) 原生协议配置
+     *
+     * 走智谱开放平台原生 v4 paas 接口, 请求体带有 `request_id` / `user_id` / `thinking`
+     * 等智谱专有字段, 鉴权支持直接 Bearer API Key 或由 `id.secret` 现场签发 HS256 JWT。
+     */
+    @Serializable
+    @SerialName("zhipu")
+    data class Zhipu(
+        override var id: Uuid = Uuid.random(),
+        override var enabled: Boolean = true,
+        override var name: String = "Zhipu",
+        override var models: List<Model> = emptyList(),
+        override val balanceOption: BalanceOption = BalanceOption(),
+        @Transient override val builtIn: Boolean = false,
+        @Transient override val description: @Composable (() -> Unit) = {},
+        @Transient override val shortDescription: @Composable (() -> Unit) = {},
+        var apiKey: String = "",
+        var baseUrl: String = "https://open.bigmodel.cn/api/paas/v4",
+        var chatCompletionsPath: String = "/chat/completions",
+        // 开启后使用智谱原生 JWT 鉴权 (api key 形如 {id}.{secret})
+        var jwtAuth: Boolean = false,
+    ) : ProviderSetting() {
+        override fun addModel(model: Model): ProviderSetting {
+            return copy(models = models + model)
+        }
+
+        override fun editModel(model: Model): ProviderSetting {
+            return copy(models = models.map { if (it.id == model.id) model.copy() else it })
+        }
+
+        override fun delModel(model: Model): ProviderSetting {
+            return copy(models = models.filter { it.id != model.id })
+        }
+
+        override fun moveMove(
+            from: Int,
+            to: Int
+        ): ProviderSetting {
+            return copy(models = models.toMutableList().apply {
+                val model = removeAt(from)
+                add(to, model)
+            })
+        }
+
+        override fun copyProvider(
+            id: Uuid,
+            enabled: Boolean,
+            name: String,
+            models: List<Model>,
+            balanceOption: BalanceOption,
+            builtIn: Boolean,
+            description: @Composable (() -> Unit),
+            shortDescription: @Composable (() -> Unit),
+        ): ProviderSetting {
+            return this.copy(
+                id = id,
+                enabled = enabled,
+                name = name,
+                models = models,
+                balanceOption = balanceOption,
+                builtIn = builtIn,
+                description = description,
+                shortDescription = shortDescription,
+            )
+        }
+    }
+
     companion object {
         val Types by lazy {
             listOf(
                 OpenAI::class,
                 Google::class,
                 Claude::class,
+                Bailian::class,
+                Zhipu::class,
             )
         }
     }

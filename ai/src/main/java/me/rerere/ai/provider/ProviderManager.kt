@@ -52,6 +52,18 @@ class ProviderManager(client: OkHttpClient, context: Context) {
             is ProviderSetting.OpenAI -> getProvider("openai")
             is ProviderSetting.Google -> getProvider("google")
             is ProviderSetting.Claude -> getProvider("claude")
+            // 百炼 / 智谱 为原生协议 Provider, 实现位于 app 模块,
+            // 由宿主在构造 ProviderManager 后通过 registerProvider 注入实例
+            is ProviderSetting.Bailian -> getProvider(PROVIDER_BAILIAN)
+            is ProviderSetting.Zhipu -> getProvider(PROVIDER_ZHIPU)
         } as Provider<T>
+    }
+
+    companion object {
+        /** 阿里云百炼 (DashScope) 原生 Provider 的注册名 */
+        const val PROVIDER_BAILIAN = "bailian"
+
+        /** 智谱 (BigModel / GLM) 原生 Provider 的注册名 */
+        const val PROVIDER_ZHIPU = "zhipu"
     }
 }
