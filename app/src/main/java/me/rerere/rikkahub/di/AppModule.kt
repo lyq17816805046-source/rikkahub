@@ -51,11 +51,19 @@ val appModule = module {
     }
 
     single {
-        Firebase.crashlytics
+        try {
+            Firebase.crashlytics
+        } catch (e: Exception) {
+            null
+        }
     }
 
     single {
-        Firebase.analytics
+        try {
+            Firebase.analytics
+        } catch (e: Exception) {
+            null
+        }
     }
 
     single {

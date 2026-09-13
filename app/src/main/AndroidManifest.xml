@@ -160,6 +160,12 @@
         android:value="androidx.startup"
         tools:node="remove" />
     </provider>
+
+    <!-- 禁用 Firebase 自动初始化，防止占位符 google-services.json 导致启动崩溃 -->
+    <provider
+      android:name="com.google.firebase.provider.FirebaseInitProvider"
+      android:authorities="${applicationId}.firebaseinitprovider"
+      tools:node="remove" />
   </application>
 
 </manifest>
