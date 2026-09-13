@@ -1,4 +1,6 @@
 package me.rerere.rikkahub
+import me.rerere.rikkahub.ys.R
+import me.rerere.rikkahub.ys.BuildConfig
 
 import android.app.Application
 import android.content.Intent
