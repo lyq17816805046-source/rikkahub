@@ -67,24 +67,21 @@ class RikkaHubApp : Application() {
             Log.w(TAG, "Firebase initialization failed (expected in debug builds)", e)
         }
         
-        // Restore files and settings before eager Koin singletons or workers can access them.
+        // 安全初始化 Koin
         try {
-            val restored = runBlocking(Dispatchers.IO) {
-                BackupManager.applyPendingRestore(this@RikkaHubApp, JsonInstant)
+            startKoin {
+                androidLogger()
+                androidContext(this@RikkaHubApp)
+                workManagerFactory()
+                modules(appModule, viewModelModule, dataSourceModule, repositoryModule)
             }
-            if (restored) {
-                Toast.makeText(this, R.string.backup_page_restore_success, Toast.LENGTH_LONG).show()
-            }
-        } catch (e: RestoreFailedException) {
-            Log.e(TAG, "Backup restore rolled back", e)
-            Toast.makeText(this, "备份恢复失败，已保留原数据。请重新导入备份。", Toast.LENGTH_LONG).show()
+            Log.d(TAG, "Koin initialized successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Koin initialization failed", e)
+            // 如果Koin初始化失败，直接退出，避免后续崩溃
+            return
         }
-        startKoin {
-            androidLogger()
-            androidContext(this@RikkaHubApp)
-            workManagerFactory()
-            modules(appModule, viewModelModule, dataSourceModule, repositoryModule)
-        }
+        
         this.createNotificationChannel()
 
         // set cursor window size to 32MB
@@ -99,6 +96,19 @@ class RikkaHubApp : Application() {
             Log.d(TAG, "QuickJS initialized successfully")
         } catch (e: Throwable) {
             Log.e(TAG, "QuickJS initialization failed", e)
+        }
+
+        // Restore files and settings after Koin is ready
+        try {
+            val restored = runBlocking(Dispatchers.IO) {
+                BackupManager.applyPendingRestore(this@RikkaHubApp, JsonInstant)
+            }
+            if (restored) {
+                Toast.makeText(this, R.string.backup_page_restore_success, Toast.LENGTH_LONG).show()
+            }
+        } catch (e: RestoreFailedException) {
+            Log.e(TAG, "Backup restore rolled back", e)
+            Toast.makeText(this, "备份恢复失败，已保留原数据。请重新导入备份。", Toast.LENGTH_LONG).show()
         }
 
         // delete temp files

@@ -166,6 +166,18 @@ class RouteActivity : ComponentActivity() {
         enableEdgeToEdge()
         disableNavigationBarContrast()
         super.onCreate(savedInstanceState)
+        
+        // 检查Koin是否成功初始化
+        try {
+            // 尝试获取一个Koin单例来测试Koin是否正常工作
+            val test = get<SettingsStore>()
+        } catch (e: Exception) {
+            Log.e(TAG, "Koin initialization failed, entering safe mode", e)
+            startActivity(Intent(this, SafeModeActivity::class.java))
+            finish()
+            return
+        }
+        
         if (CrashHandler.hasCrashed(this)) {
             startActivity(Intent(this, SafeModeActivity::class.java))
             finish()
