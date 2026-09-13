@@ -94,7 +94,7 @@ import me.rerere.hugeicons.stroke.MessageBlocked
 import me.rerere.hugeicons.stroke.View
 import me.rerere.hugeicons.stroke.ViewOff
 import me.rerere.hugeicons.stroke.Settings03
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.data.ai.mcp.McpCommonOptions
 import me.rerere.rikkahub.data.ai.mcp.McpManager
 import me.rerere.rikkahub.data.ai.mcp.McpServerConfig

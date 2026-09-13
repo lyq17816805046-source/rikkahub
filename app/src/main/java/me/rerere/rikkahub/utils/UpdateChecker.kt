@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import me.rerere.common.http.await
 import me.rerere.rikkahub.AppScope
-import me.rerere.rikkahub.BuildConfig
+import me.rerere.rikkahub.ys.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
 

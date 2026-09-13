@@ -26,7 +26,7 @@ import com.dokar.sonner.ToastType
 import me.rerere.hugeicons.HugeIcons
 import me.rerere.hugeicons.stroke.Download01
 import me.rerere.hugeicons.stroke.View
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.Screen
 import me.rerere.rikkahub.ui.components.webview.WEB_VIEW_ASSET_URL
 import me.rerere.rikkahub.ui.components.webview.WEB_VIEW_BASE_URL

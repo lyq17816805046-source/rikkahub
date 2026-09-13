@@ -76,7 +76,7 @@ import me.rerere.hugeicons.stroke.Image03
 import me.rerere.hugeicons.stroke.Search01
 import me.rerere.hugeicons.stroke.Text
 import me.rerere.hugeicons.stroke.Tools
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.Screen
 import me.rerere.rikkahub.data.datastore.SettingsStore
 import me.rerere.rikkahub.data.datastore.findModelById

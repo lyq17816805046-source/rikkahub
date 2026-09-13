@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import me.rerere.asr.ASRController
 import me.rerere.asr.ASRStatus
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.service.MessageQueuePausedException
 
 enum class VoicePhase { Off, Connecting, Listening, Transcribing, Speaking, Error }

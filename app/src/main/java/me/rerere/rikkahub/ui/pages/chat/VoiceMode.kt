@@ -1,6 +1,6 @@
 package me.rerere.rikkahub.ui.pages.chat
 
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest

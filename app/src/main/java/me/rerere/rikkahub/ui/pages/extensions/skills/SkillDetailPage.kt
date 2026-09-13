@@ -46,7 +46,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.composables.icons.lucide.ChevronDown
 import com.composables.icons.lucide.ChevronRight

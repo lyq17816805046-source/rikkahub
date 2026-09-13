@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlin.uuid.Uuid
 import me.rerere.ai.ui.UIMessagePart
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.service.MessageQueueState
 import me.rerere.rikkahub.service.QueuedMessage
 import me.rerere.rikkahub.ui.hooks.ChatInputState

@@ -16,7 +16,7 @@ import androidx.core.net.toUri
 import com.dokar.sonner.ToastType
 import me.rerere.ai.ui.UIMessagePart
 import me.rerere.common.android.appTempFolder
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.data.datastore.Settings
 import me.rerere.rikkahub.data.files.FilesManager
 import me.rerere.rikkahub.ui.components.ui.permission.PermissionCamera

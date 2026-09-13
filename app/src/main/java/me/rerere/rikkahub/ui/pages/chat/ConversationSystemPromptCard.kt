@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.rerere.hugeicons.HugeIcons
 import me.rerere.hugeicons.stroke.Setting07
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 
 @Composable
 fun ConversationSystemPromptButton(

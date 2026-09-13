@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 
 
 object ExtendedFontVariation {

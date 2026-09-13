@@ -42,7 +42,7 @@ import me.rerere.rikkahub.ui.components.ui.AutoAIIcon
 import me.rerere.rikkahub.ui.context.LocalToaster
 import me.rerere.rikkahub.utils.ImageUtils
 import me.rerere.rikkahub.utils.jsonPrimitiveOrNull
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import org.koin.compose.koinInject
 
 @Composable

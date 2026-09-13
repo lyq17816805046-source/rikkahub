@@ -10,7 +10,7 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import me.rerere.ai.provider.BalanceOption
 import me.rerere.ai.provider.ProviderSetting
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.ui.components.richtext.MarkdownBlock
 import kotlin.uuid.Uuid
 

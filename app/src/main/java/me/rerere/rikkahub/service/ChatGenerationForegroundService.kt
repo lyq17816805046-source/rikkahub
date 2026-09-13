@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.launch
 import me.rerere.rikkahub.AppScope
 import me.rerere.rikkahub.CHAT_LIVE_UPDATE_NOTIFICATION_CHANNEL_ID
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.RouteActivity
 import org.koin.android.ext.android.inject
 import kotlin.uuid.Uuid

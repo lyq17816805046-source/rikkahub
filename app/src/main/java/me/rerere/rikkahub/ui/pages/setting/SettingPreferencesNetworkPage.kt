@@ -46,8 +46,8 @@ import me.rerere.hugeicons.HugeIcons
 import me.rerere.hugeicons.stroke.ArrowRight01
 import me.rerere.hugeicons.stroke.View
 import me.rerere.hugeicons.stroke.ViewOff
-import me.rerere.rikkahub.BuildConfig
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.BuildConfig
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.data.network.toProxyOrNull
 import me.rerere.rikkahub.ui.components.nav.BackButton
 import me.rerere.rikkahub.ui.components.ui.CardGroup

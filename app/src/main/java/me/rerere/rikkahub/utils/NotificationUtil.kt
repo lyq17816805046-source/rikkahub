@@ -10,7 +10,7 @@ import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 
 /**
  * 通知构建器的配置 DSL

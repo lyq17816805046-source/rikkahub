@@ -71,7 +71,7 @@ import me.rerere.hugeicons.stroke.Edit02
 import me.rerere.hugeicons.stroke.FileImport
 import me.rerere.hugeicons.stroke.PlusSign
 import me.rerere.hugeicons.stroke.Tick01
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import me.rerere.rikkahub.ui.components.nav.BackButton
 import me.rerere.rikkahub.ui.components.ui.RikkaConfirmDialog
 import me.rerere.rikkahub.ui.context.LocalToaster

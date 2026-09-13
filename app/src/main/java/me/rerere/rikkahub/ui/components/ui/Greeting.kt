@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import me.rerere.rikkahub.R
+import me.rerere.rikkahub.ys.R
 import java.util.Calendar
 
 @Composable
