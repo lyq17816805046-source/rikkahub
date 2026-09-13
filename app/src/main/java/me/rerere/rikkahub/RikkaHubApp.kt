@@ -94,7 +94,12 @@ class RikkaHubApp : Application() {
         CrashHandler.install(this)
 
         // Init QuickJS native library
-        QuickJSLoader.init()
+        try {
+            QuickJSLoader.init()
+            Log.d(TAG, "QuickJS initialized successfully")
+        } catch (e: Throwable) {
+            Log.e(TAG, "QuickJS initialization failed", e)
+        }
 
         // delete temp files
         deleteTempFiles()
