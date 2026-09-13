@@ -1,5 +1,8 @@
 package me.rerere.rikkahub
 
+import me.rerere.rikkahub.ys.R
+import me.rerere.rikkahub.ys.BuildConfig
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
