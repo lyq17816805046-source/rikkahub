@@ -92,7 +92,7 @@
       </intent-filter>
 
       <intent-filter>
-        <action android:name="me.rerere.rikkahub.action.TRANSLATE" />
+        <action android:name="me.rerere.rikkahub.ys.action.TRANSLATE" />
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
 
