@@ -79,6 +79,7 @@ jobs:
       - name: Prepare build files
         run: |
           # 创建临时的 google-services.json（无 Secrets 时使用占位文件，Firebase 功能不可用）
+          # 包含所有可能的包名：正式包、debug包
           cat > app/google-services.json << 'EOF'
           {
             "project_info": {
@@ -89,9 +90,28 @@ jobs:
             "client": [
               {
                 "client_info": {
-                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000001",
                   "android_client_info": {
-                    "package_name": "me.rerere.rikkahub"
+                    "package_name": "me.rerere.rikkahub.ys"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "placeholder_api_key"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              },
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000002",
+                  "android_client_info": {
+                    "package_name": "me.rerere.rikkahub.ys.debug"
                   }
                 },
                 "oauth_client": [],
